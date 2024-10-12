@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="estilo.css">
+    <script defer src="fase1.js"></script>
+    <title>Fase 1</title>
+    <style>
+        #game-area {
+            position: relative;
+            width: 100%;
+            height: 80vh;
+            background-image: url('https://d1yei2z3i6k35z.cloudfront.net/6946809/66f002a1ec1e8_reinodeouro.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        .character {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+        }
+        #static-character {
+            left: 63%;
+            top: 70%;
+            z-index: 2;
+        }
+        #non-static-character {
+            left: 33%;
+            top: 70%;
+            z-index: 2;
+        }
+        .dialogue-box {
+            display: none;
+            position: absolute;
+            width: 150px;
+            font-size: 12px;
+            background: white;
+            border: 1px solid black;
+            padding: 5px;
+            border-radius: 5px;
+            z-index: 3;
+        }
+        #dialogue-static {
+            left: calc(60% - 50px); /* Posiciona acima da personagem estática */
+            top: calc(70% - 60px); /* Ajusta a altura da caixa de diálogo */
+        }
+        #dialogue-non-static {
+            left: calc(10% - 50px); /* Posiciona acima da personagem não estática */
+            top: calc(50% - 60px); /* Ajusta a altura da caixa de diálogo */
+        }
+        .controls {
+            position: fixed;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 4;
+        }
+        #next-phase-button {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            background-color: green;
+            color: white;
+            padding: 10px;
+            display: none;
+        }
+        .flower {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            z-index: 1; /* A flor fica abaixo dos personagens */
+        }
+        #score {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            font-size: 20px;
+            background: white;
+            padding: 5px;
+            border: 2px solid black;
+            border-radius: 5px;
+        }
+        #phase-title {
+            position: fixed;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 5px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<div id="game-area">
+
+    <button onclick="window.location.href='index.html'" id="back-button">Voltar ao Site</button>
+
+    <img id="static-character" class="character" src="https://d1yei2z3i6k35z.cloudfront.net/6946809/66ef0f5113d6b_rainha.png" alt="Personagem Estático">
+    <textarea id="dialogue-static" class="dialogue-box" readonly></textarea>
+
+    <img id="non-static-character" class="character" src="https://d1yei2z3i6k35z.cloudfront.net/6946809/66ef0eb571f32_cavaleiro.png" alt="Personagem Não Estático">
+    <textarea id="dialogue-non-static" class="dialogue-box" readonly></textarea>
+
+    <div id="score">Pontuação: 0</div>
+    <div id="phase-title">O Reino de Ouro Tão Tão Distante Daqui Feito de Ouro - Fase 01: O cavaleiro precisa encontar a bela rainha e pedir a mão dela em casamento.</div>
+
+   <!-- Flores -->
+   <img class="flower" src="https://d1yei2z3i6k35z.cloudfront.net/6946809/66fb2d50cc624_flores.png" style="left: 45%; top: 70%;">
+   <img class="flower" src="https://d1yei2z3i6k35z.cloudfront.net/6946809/66fb2d50cc624_flores.png" style="left: 45%; top: 80%;">
+   <img class="flower" src="https://d1yei2z3i6k35z.cloudfront.net/6946809/66fb2d50cc624_flores.png" style="left: 45%; top: 90%;">
+   <img class="flower" src="https://d1yei2z3i6k35z.cloudfront.net/6946809/66fb2d50cc624_flores.png" style="left: 55%; top: 70%;">
+   <img class="flower" src="https://d1yei2z3i6k35z.cloudfront.net/6946809/66fb2d50cc624_flores.png" style="left: 55%; top: 80%;">
+   <img class="flower" src="https://d1yei2z3i6k35z.cloudfront.net/6946809/66fb2d50cc624_flores.png" style="left: 55%; top: 90%;">
+   <img class="flower" src="https://d1yei2z3i6k35z.cloudfront.net/6946809/66fb2d50cc624_flores.png" style="left: 60%; top: 70%;">
+   <img class="flower" src="https://d1yei2z3i6k35z.cloudfront.net/6946809/66fb2d50cc624_flores.png" style="left: 60%; top: 80%;">
+   <img class="flower" src="https://d1yei2z3i6k35z.cloudfront.net/6946809/66fb2d50cc624_flores.png" style="left: 60%; top: 90%;">
+   <img class="flower" src="https://d1yei2z3i6k35z.cloudfront.net/6946809/66fb2d50cc624_flores.png" style="left: 50%; top: 70%;">
+   <img class="flower" src="https://d1yei2z3i6k35z.cloudfront.net/6946809/66fb2d50cc624_flores.png" style="left: 50%; top: 80%;">
+   <img class="flower" src="https://d1yei2z3i6k35z.cloudfront.net/6946809/66fb2d50cc624_flores.png" style="left: 50%; top: 90%;">
+   <img class="flower" src="https://d1yei2z3i6k35z.cloudfront.net/6946809/66fb2d50cc624_flores.png" style="left: 40%; top: 70%;"> 
+   <img class="flower" src="https://d1yei2z3i6k35z.cloudfront.net/6946809/66fb2d50cc624_flores.png" style="left: 40%; top: 80%;">
+   <img class="flower" src="https://d1yei2z3i6k35z.cloudfront.net/6946809/66fb2d50cc624_flores.png" style="left: 40%; top: 90%;">
+
+    <div class="controls">
+        <button id="up" onclick="moveCharacter('up')">↑</button>
+        <button id="left" onclick="moveCharacter('left')">←</button>
+        <button id="right" onclick="moveCharacter('right')">→</button>
+        <button id="down" onclick="moveCharacter('down')">↓</button>
+    </div>
+    <div id="next-phase-button">  
+        <a href="fasedois.html">CLIQUE AQUI E SIGA PARA FASE 02 BOA SORTE E APROVEITE A SUA BRINCADEIRA</a>  
+      </div>
+</div>
+
+<script>
+
+    let currentDialogue = 0;
+    const dialoguesStatic = ["Olá Cavaleiro!", "Tudo bem?", "Caso sim você terá a minha mão!"];
+    const dialoguesNonStatic = ["Oi Rainha Linda!", "Me apaixonei por ti case comigo!", "Minha rainha te amo!"];
+    let score = 0;
+
+    function moveCharacter(direction) {
+        const character = document.getElementById('non-static-character');
+        let left = parseInt(character.style.left.replace('px', '')) || character.offsetLeft;
+        let top = parseInt(character.style.top.replace('px', '')) || character.offsetTop;
+
+        switch (direction) {
+            case 'up': character.style.top = (top - 10) + 'px'; break;
+            case 'down': character.style.top = (top + 10) + 'px'; break;
+            case 'left': character.style.left = (left - 10) + 'px'; break;
+            case 'right': character.style.left = (left + 10) + 'px'; break;
+        }
+        checkCollision();
+        checkFlowerCollision();
+        updateDialoguePosition();
+    }
+
+    function checkFlowerCollision() {
+        const character = document.getElementById('non-static-character');
+        const flowers = document.querySelectorAll('.flower');
+        
+        flowers.forEach((flower, index) => {
+            const flowerRect = flower.getBoundingClientRect();
+            const charRect = character.getBoundingClientRect();
+
+            if (!flower.dataset.touched &&
+                charRect.left < flowerRect.left + flowerRect.width &&
+                charRect.left + charRect.width > flowerRect.left &&
+                charRect.top < flowerRect.top + flowerRect.height &&
+                charRect.top + charRect.height > flowerRect.top) {
+                
+                flower.dataset.touched = "true";
+                score += 100;
+                document.getElementById('score').textContent = `Pontuação: ${score}`;
+            }
+        });
+    }
+
+    function startDialogue() {  
+   const dialogueStatic = document.getElementById('dialogue-static');  
+   const dialogueNonStatic = document.getElementById('dialogue-non-static');  
+  
+   function showNextDialogue() {  
+      if (document.getElementById('next-phase-button').style.display === 'block') {  
+        return;  
+      }  
+  
+      if (currentDialogue < dialoguesStatic.length) {  
+        dialogueStatic.value = dialoguesStatic[currentDialogue];  
+        dialogueNonStatic.value = dialoguesNonStatic[currentDialogue];  
+        dialogueStatic.style.display = 'block';  
+        dialogueNonStatic.style.display = 'block';  
+  
+        currentDialogue++;  
+        setTimeout(() => {  
+           dialogueStatic.style.display = 'none';  
+           dialogueNonStatic.style.display = 'none';  
+           setTimeout(showNextDialogue, 8000); // Adiciona um intervalo de 8 segundos entre os diálogos  
+        }, 7000); // Tempo de exibição do diálogo  
+      } else {  
+        document.getElementById('next-phase-button').style.display = 'block';  
+      }  
+   }  
+   showNextDialogue();  
+}
+
+    
+    function checkCollision() {
+        const character = document.getElementById('non-static-character');
+        const queen = document.getElementById('static-character');
+        const charRect = character.getBoundingClientRect();
+        const queenRect = queen.getBoundingClientRect();
+
+        if (charRect.left < queenRect.left + queenRect.width &&
+            charRect.left + charRect.width > queenRect.left &&
+            charRect.top < queenRect.top + queenRect.height &&
+            charRect.top + charRect.height > queenRect.top) {
+            startDialogue();
+        }
+    }
+
+    function updateDialoguePosition() {  
+   const character = document.getElementById('non-static-character');  
+   const dialogueNonStatic = document.getElementById('dialogue-non-static');  
+   const viewportHeight = window.innerHeight;  
+   const dialogueRect = dialogueNonStatic.getBoundingClientRect();  
+   const characterRect = character.getBoundingClientRect();  
+  
+   dialogueNonStatic.style.left = `${character.offsetLeft}px`;  
+   dialogueNonStatic.style.top = `${character.offsetTop + character.offsetHeight + 10}px`;  
+  
+   if (dialogueRect.bottom > viewportHeight) {  
+      dialogueNonStatic.style.top = `${viewportHeight - dialogueRect.height - 10}px`;  
+   }  
+}
+
+
+function checkFlowerCollision() {
+        const king = document.getElementById('non-static-character');
+        const flowers = document.querySelectorAll('.flower');
+
+        flowers.forEach(flower => {
+            const flowerRect = flower.getBoundingClientRect();
+            const kingRect = king.getBoundingClientRect();
+
+            if (kingRect.left < flowerRect.left + flowerRect.width &&
+                kingRect.left + kingRect.width > flowerRect.left &&
+                kingRect.top < flowerRect.top + flowerRect.height &&
+                kingRect.top + kingRect.height > flowerRect.top) {
+
+                flower.remove();
+                score += 100;
+                document.getElementById('score').innerText = `Pontuação: ${score}`;
+            }
+        });
+    }
+
+
+</script>
+</body>
+</html>

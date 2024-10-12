@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fase 4</title>
+    
+    <style>
+        #game-area {
+            position: relative;
+            width: 100%;
+            height: 80vh;
+            background-image: url('https://d1yei2z3i6k35z.cloudfront.net/6946809/66f0043b3503e_florestamonstros.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .character {
+            position: absolute;
+            width: 100px;
+        }
+        .dialogue-box {
+            position: absolute;
+            width: 150px;
+            height: 40px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: none;
+            font-size: 12px;
+            padding: 5px;
+            display: none;
+        }
+
+        #dialogue-non-static {
+            top: 70px;
+            left: 50px;
+            z-index: 2;
+        }
+        #dialogue-monster-1 {
+            top: 150px;
+            left: 300px;
+            z-index: 1;
+        }
+        #dialogue-monster-2 {
+            top: 250px;
+            left: 450px;
+            z-index: 1;
+        }
+        #dialogue-monster-3 {
+            top: 350px;
+            left: 600px;
+            z-index: 1;
+        }
+
+        #monster-1 {
+            left: 48%;
+            top: 4%;
+            z-index: 2;
+        }
+
+        #monster-3 {
+            left: 30%;
+            top: 10%;
+            z-index: 2;
+            width: 60px; /* Reduz o tamanho do personagem */
+        }
+
+        #monster-2 {
+            left: 40%;
+            top: 80%;
+            z-index: 2;
+        }
+
+        #knight-handsome-joao {
+            left: 68%;
+            top: 63%;
+            z-index: 2;
+            width: 40px; /* Reduz o tamanho do personagem */
+        }
+
+
+        .controls {
+            position: fixed;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 4;
+        }
+        #next-phase-button {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            background-color: green;
+            color: white;
+            padding: 10px;
+            display: none;
+        }
+
+        .flower {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            z-index: 1;
+        }
+
+        #score {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            font-size: 20px;
+            background: white;
+            padding: 5px;
+            border: 2px solid black;
+            border-radius: 5px;
+        }
+
+        #phase-title {
+            position: fixed;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 5px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-area">
+    
+        <button onclick="window.location.href='index.html'" id="back-button">Voltar ao Site</button>
+        
+        <img id="knight-handsome-joao" class="character" src="https://d1yei2z3i6k35z.cloudfront.net/6946809/66ef0ff6e6b7c_pricipeestiloso.png" alt="Cavaleiro João">
+        <textarea id="dialogue-non-static" class="dialogue-box" readonly></textarea>
+        
+        <img id="monster-1" class="character static" src="https://d1yei2z3i6k35z.cloudfront.net/6946809/66ef11496672d_brucha.png" alt="Monstro 1">
+        <textarea id="dialogue-monster-1" class="dialogue-box" readonly></textarea>
+    
+        <img id="monster-2" class="character static" src="https://d1yei2z3i6k35z.cloudfront.net/6946809/66ef11aa68d9f_vampiroII.png" alt="Monstro 2">
+        <textarea id="dialogue-monster-2" class="dialogue-box" readonly></textarea>
+    
+        <img id="monster-3" class="character static" src="https://d1yei2z3i6k35z.cloudfront.net/6946809/66ef11d78c357_lobipiro.png" alt="Monstro 3">
+        <textarea id="dialogue-monster-3" class="dialogue-box" readonly></textarea>
+    
+        <div id="score">Pontuação: 0</div>
+        <div id="phase-title">O Reino de Ouro Tão Tão Distante Daqui Feito de Ouro - Fase 4: O cavaleiro precisa atravessar pela floresta de monstrons para chegar no reino mágico.</div>
+    
+        <img class="flower" src="https://d1yei2z3i6k35z.cloudfront.net/6946809/66fb2d50cc624_flores.png" style="left: 30%; top: 90%;">
+        <img class="flower" src="https://d1yei2z3i6k35z.cloudfront.net/6946809/66fb2d50cc624_flores.png" style="left: 50%; top: 90%;">
+        <img class="flower" src="https://d1yei2z3i6k35z.cloudfront.net/6946809/66fb2d50cc624_flores.png" style="left: 60%; top: 90%;">
+        <img class="flower" src="https://d1yei2z3i6k35z.cloudfront.net/6946809/66fb2d50cc624_flores.png" style="left: 70%; top: 90%;">
+        <img class="flower" src="https://d1yei2z3i6k35z.cloudfront.net/6946809/66fb2d50cc624_flores.png" style="left: 43%; top: 70%;">
+    
+        <div class="controls">
+            <button id="up" onclick="moveCharacter('up')">↑</button>
+            <button id="left" onclick="moveCharacter('left')">←</button>
+            <button id="right" onclick="moveCharacter('right')">→</button>
+            <button id="down" onclick="moveCharacter('down')">↓</button>
+        </div>
+        <div id="next-phase-button">
+            <a href="fasecinco.html">CLIQUE AQUI E SIGA PARA FASE 05</a>
+        </div>
+    </div>
+
+    <audio id="som-lobo" src="scary-wolf-growling-224086.mp3" controls></audio>
+
+    <script>
+
+let score = 0;
+let dialoguesCompleted = {
+    'monster-1': false,
+    'monster-2': false,
+    'monster-3': false
+};
+
+const dialogues = {
+    'monster-1': ["Eu vou te assar no meu caldeirão!", "Aí eu deixo você passar!"],
+    'monster-2': ["Eu vou beber o seu sangue!", "Aí eu deixo você passar!"],
+    'monster-3': ["Auuuuu vou comer você!", "Aí eu deixo você passar!"],
+    'knight-handsome-joao-monster-1': ["E se eu te der uma vassoura?", "Valeu bruxa, cuidado com os tombos!"],
+    'knight-handsome-joao-monster-2': ["Porém se te der uma dentadura nova?", "Valeu até nunca mais seu doidinho!"],
+    'knight-handsome-joao-monster-3': ["E se eu tirar as suas pulgas.", "Valeu seu cachorrão!"]
+};
+
+// Adicionar um índice de diálogo para cada monstro
+let dialogueIndex = {
+    'monster-1': 0,
+    'monster-2': 0,
+    'monster-3': 0
+};
+
+document.addEventListener('keydown', (event) => {
+    if (event.key === 'ArrowUp') moveCharacter('up');
+    if (event.key === 'ArrowDown') moveCharacter('down');
+    if (event.key === 'ArrowLeft') moveCharacter('left');
+    if (event.key === 'ArrowRight') moveCharacter('right');
+});
+
+function moveCharacter(direction) {
+    const character = document.getElementById('knight-handsome-joao');
+    let left = parseFloat(window.getComputedStyle(character).left) || character.offsetLeft;
+    let top = parseFloat(window.getComputedStyle(character).top) || character.offsetTop;
+
+    switch (direction) {
+        case 'up': character.style.top = (top - 10) + 'px'; break;
+        case 'down': character.style.top = (top + 10) + 'px'; break;
+        case 'left': character.style.left = (left - 10) + 'px'; break;
+        case 'right': character.style.left = (left + 10) + 'px'; break;
+    }
+
+    checkCollision();
+    checkFlowerCollision();
+}
+
+function checkCollision() {
+    const knight = document.getElementById('knight-handsome-joao');
+    const characters = document.querySelectorAll('.static');
+
+    characters.forEach(character => {
+        const charRect = character.getBoundingClientRect();
+        const knightRect = knight.getBoundingClientRect();
+
+        if (knightRect.left < charRect.left + charRect.width &&
+            knightRect.left + knightRect.width > charRect.left &&
+            knightRect.top < charRect.top + charRect.height &&
+            knightRect.top + knightRect.height > charRect.top) {
+
+            const characterId = character.id;
+
+            if (!dialoguesCompleted[characterId]) {
+                triggerDialogue(characterId);
+            }
+        }
+    });
+}
+
+function triggerDialogue(characterId) {
+    const monsterDialogues = dialogues[characterId];
+    const knightDialogueKey = `knight-handsome-joao-${characterId}`;
+    const knightDialogues = dialogues[knightDialogueKey];
+
+    if (dialogueIndex[characterId] < monsterDialogues.length) {
+        // Exibir diálogo do monstro
+        const staticDialogue = monsterDialogues[dialogueIndex[characterId]];
+        const knightDialogue = knightDialogues[dialogueIndex[characterId]];
+
+        const dialogueBox = document.getElementById(`dialogue-${characterId}`);
+        dialogueBox.style.display = 'block';
+        dialogueBox.textContent = staticDialogue;
+
+        setTimeout(() => {
+            dialogueBox.style.display = 'none';
+
+            // Exibir diálogo do personagem não estático
+            if (knightDialogue) {
+                const knightDialogueBox = document.getElementById('dialogue-non-static');
+                knightDialogueBox.style.display = 'block';
+                knightDialogueBox.textContent = knightDialogue;
+
+                setTimeout(() => {
+                    knightDialogueBox.style.display = 'none';
+                    dialogueIndex[characterId]++;
+
+                    if (dialogueIndex[characterId] < monsterDialogues.length) {
+                        // Chamar a função novamente para o próximo diálogo
+                        triggerDialogue(characterId);
+                    } else {
+                        dialoguesCompleted[characterId] = true;
+                        checkPhaseCompletion();
+                    }
+
+                }, 4000); // Mostra o diálogo do personagem não estático por 4 segundos
+            }
+
+        }, 4000); // Mostra o diálogo do monstro por 4 segundos
+    }
+}
+
+function checkFlowerCollision() {
+    const king = document.getElementById('knight-handsome-joao');
+    const flowers = document.querySelectorAll('.flower');
+
+    flowers.forEach(flower => {
+        const flowerRect = flower.getBoundingClientRect();
+        const kingRect = king.getBoundingClientRect();
+
+        if (kingRect.left < flowerRect.left + flowerRect.width &&
+            kingRect.left + kingRect.width > flowerRect.left &&
+            kingRect.top < flowerRect.top + flowerRect.height &&
+            kingRect.top + kingRect.height > flowerRect.top) {
+
+            flower.remove();
+            score += 100;
+            document.getElementById('score').textContent = 'Pontuação: ' + score;
+        }
+    });
+}
+
+function checkPhaseCompletion() {
+    if (dialoguesCompleted['monster-1'] && dialoguesCompleted['monster-2'] && dialoguesCompleted['monster-3']) {
+        document.getElementById('next-phase-button').style.display = 'block';
+    }
+}
+
+</script>
+
+</body>
+</html>    

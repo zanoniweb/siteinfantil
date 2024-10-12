@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fase 5</title>
+    
+    <style>
+        #game-area {
+            position: relative;
+            width: 100%;
+            height: 80vh;
+            background-image: url('https://d1yei2z3i6k35z.cloudfront.net/6946809/66f004c501c16_castelomagico.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .character {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+        }
+
+        #static-character {
+            left: 10%;
+            top: 57%;
+            z-index: 2;
+            width: 100px;
+            height: 100px;
+        }
+
+        #non-static-character  {
+            left: 68%;
+            top: 63%;
+            z-index: 2;
+            width: 100px;
+            height: 100px;
+        }
+
+        .dialogue-box {
+            display: none;
+            position: absolute;
+            width: 150px;
+            font-size: 12px;
+            background: white;
+            border: 1px solid black;
+            padding: 5px;
+            border-radius: 5px;
+            z-index: 3;
+        }
+
+        #dialogue-static {
+            left: calc(80% - 50px);
+            top: calc(50% - 60px);
+        }
+        #dialogue-non-static {
+            left: calc(60% - 40px);
+            top: calc(50% - 60px);
+        }
+
+        .controls {
+            position: fixed;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 4;
+        }
+
+        #next-phase-button {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            background-color: green;
+            color: white;
+            padding: 10px;
+            display: none;
+        }
+
+        .iten {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            z-index: 1;
+        }
+
+        #score {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            font-size: 20px;
+            background: white;
+            padding: 5px;
+            border: 2px solid black;
+            border-radius: 5px;
+        }
+
+        #phase-title {
+            position: fixed;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 5px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-area">
+
+        <button onclick="window.location.href='index.html'" id="back-button">Voltar ao Site</button>
+
+        <img id="static-character" class="character" src="https://d1yei2z3i6k35z.cloudfront.net/6946809/66ef10636f630_merlin.png" alt="Personagem Estático">
+        <textarea id="dialogue-static" class="dialogue-box" readonly></textarea>
+    
+        <img id="non-static-character" class="character" src="https://d1yei2z3i6k35z.cloudfront.net/6946809/66ef0ff6e6b7c_pricipeestiloso.png" alt="Personagem Não Estático">
+        <textarea id="dialogue-non-static" class="dialogue-box" readonly></textarea>
+    
+        <div id="score">Pontuação: 0</div>
+        <div id="phase-title">O Reino de Ouro Tão Tão Distante Daqui Feito de Ouro - Fase 05: Reverta a maldade do castelo fazendo boas ações e se torne um rei para a princesa Be.</div>
+    
+        <!-- OBJETOS PARA BOAS AÇÕES -->
+        <img class="iten" src="https://d1yei2z3i6k35z.cloudfront.net/6946809/66ef12a8cb101_vassoura.png" style="left: 40%; top: 53%;">
+        <img class="iten" src="https://d1yei2z3i6k35z.cloudfront.net/6946809/66ef13e68190e_pa.png" style="left: 20%; top: 80%;">
+        <img class="iten" src="https://d1yei2z3i6k35z.cloudfront.net/6946809/66ef1361ba443_esfregao.png" style="left: 62%; top: 50%;">
+        <img class="iten" src="https://d1yei2z3i6k35z.cloudfront.net/6946809/66ef1475a1874_lata.png" style="left: 80%; top: 80%;">
+    
+        <div class="controls">
+            <button id="up" onclick="moveCharacter('up')">↑</button>
+            <button id="left" onclick="moveCharacter('left')">←</button>
+            <button id="right" onclick="moveCharacter('right')">→</button>
+            <button id="down" onclick="moveCharacter('down')">↓</button>
+        </div>
+        <div id="next-phase-button">  
+            <a href="faseseis.html">CLIQUE AQUI E SIGA PARA FASE 06 BOA SORTE E APROVEITE A SUA BRINCADEIRA</a>  
+          </div>
+    </div>
+
+    <audio id="som-lobo" src=" magic-sparkle-190030.mp3" controls></audio>
+    
+    <script>
+        let currentDialogue = 0;
+        const dialoguesStatic = ["Olá Cavaleiro!", "Você tirou a magia?", "Tu és rei desse reino!"];
+        const dialoguesNonStatic = ["Oi Merin!", "Eu psso ser rei agora!", "Princesa Be te amo!"];
+        let score = 0;
+        const cavaleiroUrl = 'https://d1yei2z3i6k35z.cloudfront.net/6946809/670142ee5d9e2_cavaleirodois.png';
+    
+        function moveCharacter(direction) {
+            const character = document.getElementById('non-static-character');
+            let left = parseInt(character.style.left.replace('px', '')) || character.offsetLeft;
+            let top = parseInt(character.style.top.replace('px', '')) || character.offsetTop;
+    
+            switch (direction) {
+                case 'up': character.style.top = (top - 10) + 'px'; break;
+                case 'down': character.style.top = (top + 10) + 'px'; break;
+                case 'left': character.style.left = (left - 10) + 'px'; break;
+                case 'right': character.style.left = (left + 10) + 'px'; break;
+            }
+            checkCollision();
+            checkItemCollision();
+            updateDialoguePosition();
+        }
+    
+        function checkItemCollision() {
+            const character = document.getElementById('non-static-character');
+            const items = document.querySelectorAll('.iten');
+            
+            items.forEach((item, index) => {
+                const itemRect = item.getBoundingClientRect();
+                const charRect = character.getBoundingClientRect();
+    
+                if (!item.dataset.transformed &&
+                    charRect.left < itemRect.left + itemRect.width &&
+                    charRect.left + charRect.width > itemRect.left &&
+                    charRect.top < itemRect.top + itemRect.height &&
+                    charRect.top + charRect.height > itemRect.top) {
+                    
+                    item.src = cavaleiroUrl;  // Transforma o item em cavaleiro
+                    item.dataset.transformed = "true";
+                }
+            });
+        }
+    
+        function startDialogue() {  
+       const dialogueStatic = document.getElementById('dialogue-static');  
+       const dialogueNonStatic = document.getElementById('dialogue-non-static');  
+      
+       function showNextDialogue() {  
+          if (document.getElementById('next-phase-button').style.display === 'block') {  
+            return;  
+          }  
+      
+          if (currentDialogue < dialoguesStatic.length) {  
+            dialogueStatic.value = dialoguesStatic[currentDialogue];  
+            dialogueNonStatic.value = dialoguesNonStatic[currentDialogue];  
+            dialogueStatic.style.display = 'block';  
+            dialogueNonStatic.style.display = 'block';  
+      
+            currentDialogue++;  
+            setTimeout(() => {  
+               dialogueStatic.style.display = 'none';  
+               dialogueNonStatic.style.display = 'none';  
+               setTimeout(showNextDialogue, 8000); // Adiciona um intervalo de 8 segundos entre os diálogos  
+            }, 8000);  
+          } else {  
+            document.getElementById('next-phase-button').style.display = 'block';  
+          }  
+       }  
+      
+       showNextDialogue();  
+    }
+    
+        function checkCollision() {
+            const character = document.getElementById('non-static-character');
+            const staticCharacter = document.getElementById('static-character');
+            const staticRect = staticCharacter.getBoundingClientRect();
+            const charRect = character.getBoundingClientRect();
+    
+            if (charRect.left < staticRect.left + staticRect.width &&
+                charRect.left + charRect.width > staticRect.left &&
+                charRect.top < staticRect.top + staticRect.height &&
+                charRect.top + charRect.height > staticRect.top) {
+                startDialogue();
+            }
+        }
+    
+        function updateDialoguePosition() {
+            const character = document.getElementById('non-static-character');
+            const dialogueBox = document.getElementById('dialogue-non-static');
+            dialogueBox.style.left = (parseInt(character.style.left) - 40) + 'px';
+            dialogueBox.style.top = (parseInt(character.style.top) - 60) + 'px';
+        }
+    </script>
+</body>
+</html>

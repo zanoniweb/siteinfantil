@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="estilo.css">
+    <script defer src="fase2.js"></script>
+    <title>Fase 2</title>
+    
+    <style>
+        #game-area {
+            position: relative;
+            width: 100%;
+            height: 80vh;
+            background-image: url('https://d1yei2z3i6k35z.cloudfront.net/6946809/66f003a245a18_reinointerno.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .character {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+        }
+
+        #king-juliano {
+            left: 73%;
+            top: 57%;
+            z-index: 2;
+        }
+
+        #knight-dirty-underwear {
+            left: 20%;
+            top: 85%;
+            z-index: 2;
+        }
+
+        #knight-drooling-joao {
+            left: 40%;
+            top: 85%;
+            z-index: 2;
+        }
+
+        #knight-handsome-joao  {
+            left: 45%;
+            top: 64%;
+            z-index: 2;
+        }
+
+
+        #princesa-be {
+            left: 60%;
+            top: 80%;
+            z-index: 2;
+        }
+
+        .dialogue-box {
+            display: none;
+            position: absolute;
+            width: 150px;
+            font-size: 12px;
+            background: white;
+            border: 1px solid black;
+            padding: 5px;
+            border-radius: 5px;
+            z-index: 3;
+        }
+
+        .controls {
+            position: fixed;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 4;
+        }
+
+        #next-phase-button {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            background-color: green;
+            color: white;
+            padding: 10px;
+            display: none;
+        }
+
+        .flower {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            z-index: 1;
+        }
+
+        #score {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            font-size: 20px;
+            background: white;
+            padding: 5px;
+            border: 2px solid black;
+            border-radius: 5px;
+        }
+
+        #phase-title {
+            position: fixed;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 5px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<div id="game-area">
+
+    <button onclick="window.location.href='index.html'" id="back-button">Voltar ao Site</button>
+    
+    <img id="princesa-be" class="character" src="https://d1yei2z3i6k35z.cloudfront.net/6946809/66ef0d8e6cda0_princesaBe.png" alt="Princesa Be">
+    
+    <img id="knight-dirty-underwear" class="character static" src="https://d1yei2z3i6k35z.cloudfront.net/6946809/66ef110c2ae7f_princepesarampo.png" alt="Cavaleiro Cuequinha Suja">
+    <img id="knight-drooling-joao" class="character static" src="https://d1yei2z3i6k35z.cloudfront.net/6946809/66ef10ca555fc_principepum.png" alt="Cavaleiro João Babão">
+    <img id="knight-handsome-joao" class="character static" src="https://d1yei2z3i6k35z.cloudfront.net/6946809/66ef0ff6e6b7c_pricipeestiloso.png" alt="Cavaleiro João">
+    
+    
+    <img id="king-juliano" class="character static" src="https://d1yei2z3i6k35z.cloudfront.net/6946809/66ef0eb571f32_cavaleiro.png" alt="Rei Juliano">
+
+
+    <textarea id="dialogue-box" class="dialogue-box" readonly></textarea>
+
+    <div id="score">Pontuação: 0</div>
+    <div id="phase-title">O Reino de Ouro Tão Tão Distante Daqui Feito de Ouro - Fase 3: A princesa Be precisa escolher entre os cavaleiros o seu futuro esposo.</div>
+
+    <!-- Flores -->
+    <img class="flower" src="https://d1yei2z3i6k35z.cloudfront.net/6946809/66fb2d50cc624_flores.png" style="left: 35%; top: 70%;">
+    <img class="flower" src="https://d1yei2z3i6k35z.cloudfront.net/6946809/66fb2d50cc624_flores.png" style="left: 40%; top: 70%;">
+    <img class="flower" src="https://d1yei2z3i6k35z.cloudfront.net/6946809/66fb2d50cc624_flores.png" style="left: 55%; top: 70%;">
+    <img class="flower" src="https://d1yei2z3i6k35z.cloudfront.net/6946809/66fb2d50cc624_flores.png" style="left: 60%; top: 70%;">
+    <img class="flower" src="https://d1yei2z3i6k35z.cloudfront.net/6946809/66fb2d50cc624_flores.png" style="left: 65%; top: 70%;">
+
+    <div class="controls">
+        <button id="up" onclick="moveCharacter('up')">↑</button>
+        <button id="left" onclick="moveCharacter('left')">←</button>
+        <button id="right" onclick="moveCharacter('right')">→</button>
+        <button id="down" onclick="moveCharacter('down')">↓</button>
+    </div>
+    <div id="next-phase-button">
+        <a href="fasequatro.html">CLIQUE AQUI E SIGA PARA FASE 04</a>
+    </div>
+</div>
+
+<script>
+   let score = 0;
+    let dialoguesCompleted = {
+        'knight-dirty-underwear': false,
+        'knight-drooling-joao': false,
+        'knight-handsome-joao': false,
+        'king-juliano': false
+    };
+
+    const dialogues = {
+        'knight-dirty-underwear': ["Olá princesa eu sou o cuequinha!", "Pois me chamam de cuequinha suja!"],
+        'knight-drooling-joao': ["Boa tarde, me chamam de João o babão!", "Princesa você aceita um beijo com babinha!"],
+        'knight-handsome-joao': ["Oi bela donzela meu nome é João!", "E falo que apaixonei por ti!"],
+        'king-juliano': ["Boa tarde princesa!", "Diga para ele ir no Reino Enfeitiçado!"],
+        'princesa-be-knight-dirty-underwear': ["Que nojo?", "Você cheira a pum!"],
+        'princesa-be-knight-drooling-joao': ["Você é muito estranho.", "Vou pular você sai fora!"],
+        'princesa-be-knight-handsome-joao': ["Você é encantador.", "Vou falar com o meu papai!"],
+        'princesa-be-king-juliano': ["Papai gostei de um pretendente!", "Preciso de sua ajuda!"]
+    };
+
+    function moveCharacter(direction) {
+        const character = document.getElementById('princesa-be');
+        let left = parseFloat(window.getComputedStyle(character).left) || character.offsetLeft;
+        let top = parseFloat(window.getComputedStyle(character).top) || character.offsetTop;
+
+        switch (direction) {
+            case 'up': character.style.top = (top - 10) + 'px'; break;
+            case 'down': character.style.top = (top + 10) + 'px'; break;
+            case 'left': character.style.left = (left - 10) + 'px'; break;
+            case 'right': character.style.left = (left + 10) + 'px'; break;
+        }
+
+        checkCollision();
+        checkFlowerCollision();
+    }
+
+    function checkCollision() {
+        const be = document.getElementById('princesa-be');
+        const characters = document.querySelectorAll('.static');
+        const dialogueBox = document.getElementById('dialogue-box');
+
+        characters.forEach(character => {
+            const charRect = character.getBoundingClientRect();
+            const beRect = be.getBoundingClientRect();
+
+            if (beRect.left < charRect.left + charRect.width &&
+                beRect.left + beRect.width > charRect.left &&
+                beRect.top < charRect.top + charRect.height &&
+                beRect.top + beRect.height > charRect.top) {
+
+                const characterId = character.id;
+
+                if (!dialoguesCompleted[characterId]) {
+                    const staticDialogue = dialogues[characterId].shift();
+                    const beDialogueKey = `princesa-be-${characterId}`;
+                    const beDialogue = dialogues[beDialogueKey] ? dialogues[beDialogueKey].shift() : null;
+
+                    if (staticDialogue) {
+                        dialogueBox.style.display = 'block';
+                        dialogueBox.style.left = charRect.left + 'px';
+                        dialogueBox.style.top = (charRect.top - 50) + 'px';
+                        dialogueBox.value = staticDialogue;
+
+                        setTimeout(() => {
+                            if (beDialogue) {
+                                dialogueBox.value = beDialogue;
+                            }
+
+                            setTimeout(() => {
+                                dialoguesCompleted[characterId] = true;
+                                dialogueBox.style.display = 'none';
+                                checkPhaseCompletion();
+                            }, 7000); // Tempo de 7 segundos entre os diálogos
+
+                        }, 7000); // Exibe o diálogo da princesa Be após 7 segundos
+                    }
+                }
+            }
+        });
+    }
+
+    function checkFlowerCollision() {
+        const king = document.getElementById('princesa-be');
+        const flowers = document.querySelectorAll('.flower');
+
+        flowers.forEach(flower => {
+            const flowerRect = flower.getBoundingClientRect();
+            const kingRect = king.getBoundingClientRect();
+
+            if (kingRect.left < flowerRect.left + flowerRect.width &&
+                kingRect.left + kingRect.width > flowerRect.left &&
+                kingRect.top < flowerRect.top + flowerRect.height &&
+                kingRect.top + kingRect.height > flowerRect.top) {
+
+                flower.remove();
+                score += 100;
+                document.getElementById('score').innerText = `Pontuação: ${score}`;
+            }
+        });
+    }
+
+    function checkPhaseCompletion() {
+        if (dialoguesCompleted['knight-dirty-underwear'] &&
+            dialoguesCompleted['knight-drooling-joao'] &&
+            dialoguesCompleted['knight-handsome-joao'] &&
+            dialoguesCompleted['king-juliano']) {
+
+            document.getElementById('next-phase-button').style.display = 'block';
+        }
+    }
+</script>
+
+</body>
+</html>
+
+

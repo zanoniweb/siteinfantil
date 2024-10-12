@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="estilo.css">
+    <script defer src="fase2.js"></script>
+    <title>Fase 2</title>
+    
+    <style>
+
+#game-area {
+            position: relative;
+            width: 100%;
+            height: 80vh;
+            background-image: url('https://d1yei2z3i6k35z.cloudfront.net/6946809/66f002a1ec1e8_reinodeouro.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .character {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+        }
+
+        #king-juliano {
+            left: 33%;
+            top: 70%;
+            z-index: 2;
+        }
+
+        #princesa-be {
+            left: 60%;
+            top: 65%;
+            z-index: 2;
+        }
+
+        #princesa-ba {
+            left: 40%;
+            top: 60%;
+            z-index: 2;
+        }
+
+        #queen-valquiria {
+            left: 50%;
+            top: 50%;
+            z-index: 2;
+        }
+
+        .dialogue-box {
+            display: none;
+            position: absolute;
+            width: 150px;
+            font-size: 12px;
+            background: white;
+            border: 1px solid black;
+            padding: 5px;
+            border-radius: 5px;
+            z-index: 3;
+        }
+
+        .controls {
+            position: fixed;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 4;
+        }
+
+        #next-phase-button {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            background-color: green;
+            color: white;
+            padding: 10px;
+            display: none;
+        }
+
+        .flower {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            z-index: 1;
+        }
+
+        #score {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            font-size: 20px;
+            background: white;
+            padding: 5px;
+            border: 2px solid black;
+            border-radius: 5px;
+        }
+
+        #phase-title {
+            position: fixed;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 5px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+    </style>
+
+</head>
+<body>
+  
+    <div id="game-area">
+
+        <button onclick="window.location.href='index.html'" id="back-button">Voltar ao Site</button>
+    
+        <img id="king-juliano" class="character" src="https://d1yei2z3i6k35z.cloudfront.net/6946809/66ef0eb571f32_cavaleiro.png" alt="Rei Juliano">
+        <img id="princesa-ba" class="character static" src="https://d1yei2z3i6k35z.cloudfront.net/6946809/66ef0e4a69f25_princesaBa.png" alt="Princesa Ba">
+        <img id="queen-valquiria" class="character static" src="https://d1yei2z3i6k35z.cloudfront.net/6946809/66ef0f5113d6b_rainha.png" alt="Rainha Valquiria">
+        <img id="princesa-be" class="character static" src="https://d1yei2z3i6k35z.cloudfront.net/6946809/66ef0d8e6cda0_princesaBe.png" alt="Princesa Be">
+    
+        <textarea id="dialogue-box" class="dialogue-box" readonly></textarea>
+    
+        <div id="score">Pontuação: 0</div>
+        <div id="phase-title">O Reino de Ouro Tão Tão Distante Daqui Feito de Ouro - Fase 2: O rei precisa encontrar a princesa Be.</div>
+    
+        <!-- Flores -->
+        <img class="flower" src="https://d1yei2z3i6k35z.cloudfront.net/6946809/66fb2d50cc624_flores.png" style="left: 38%; top: 85%;"> 
+        <img class="flower" src="https://d1yei2z3i6k35z.cloudfront.net/6946809/66fb2d50cc624_flores.png" style="left: 38%; top: 95%;">
+        <img class="flower" src="https://d1yei2z3i6k35z.cloudfront.net/6946809/66fb2d50cc624_flores.png" style="left: 60%; top: 80%;">
+        <img class="flower" src="https://d1yei2z3i6k35z.cloudfront.net/6946809/66fb2d50cc624_flores.png" style="left: 60%; top: 90%;">
+        <img class="flower" src="https://d1yei2z3i6k35z.cloudfront.net/6946809/66fb2d50cc624_flores.png" style="left: 55%; top: 70%;"> 
+        <img class="flower" src="https://d1yei2z3i6k35z.cloudfront.net/6946809/66fb2d50cc624_flores.png" style="left: 55%; top: 80%;"> 
+        <img class="flower" src="https://d1yei2z3i6k35z.cloudfront.net/6946809/66fb2d50cc624_flores.png" style="left: 55%; top: 90%;">
+        <img class="flower" src="https://d1yei2z3i6k35z.cloudfront.net/6946809/66fb2d50cc624_flores.png" style="left: 50%; top: 70%;"> 
+        <img class="flower" src="https://d1yei2z3i6k35z.cloudfront.net/6946809/66fb2d50cc624_flores.png" style="left: 50%; top: 80%;"> 
+        <img class="flower" src="https://d1yei2z3i6k35z.cloudfront.net/6946809/66fb2d50cc624_flores.png" style="left: 50%; top: 90%;">
+        <img class="flower" src="https://d1yei2z3i6k35z.cloudfront.net/6946809/66fb2d50cc624_flores.png" style="left: 42%; top: 70%;"> 
+        <img class="flower" src="https://d1yei2z3i6k35z.cloudfront.net/6946809/66fb2d50cc624_flores.png" style="left: 42%; top: 80%;"> 
+        <img class="flower" src="https://d1yei2z3i6k35z.cloudfront.net/6946809/66fb2d50cc624_flores.png" style="left: 42%; top: 90%;">
+        <img class="flower" src="https://d1yei2z3i6k35z.cloudfront.net/6946809/66fb2d50cc624_flores.png" style="left: 45%; top: 70%;"> 
+        <img class="flower" src="https://d1yei2z3i6k35z.cloudfront.net/6946809/66fb2d50cc624_flores.png" style="left: 45%; top: 80%;"> 
+        <img class="flower" src="https://d1yei2z3i6k35z.cloudfront.net/6946809/66fb2d50cc624_flores.png" style="left: 45%; top: 90%;">
+        <img class="flower" src="https://d1yei2z3i6k35z.cloudfront.net/6946809/66fb2d50cc624_flores.png" style="left: 32%; top: 80%;">
+        <img class="flower" src="https://d1yei2z3i6k35z.cloudfront.net/6946809/66fb2d50cc624_flores.png" style="left: 32%; top: 90%;">
+    
+        <div class="controls">
+            <button id="up" onclick="moveCharacter('up')">↑</button>
+            <button id="left" onclick="moveCharacter('left')">←</button>
+            <button id="right" onclick="moveCharacter('right')">→</button>
+            <button id="down" onclick="moveCharacter('down')">↓</button>
+        </div>
+        <div id="next-phase-button">
+            <a href="fasetres.html">CLIQUE AQUI E SIGA PARA FASE 03</a>
+        </div>
+    </div>
+    
+
+<script>
+
+let score = 0;
+    let dialoguesCompleted = {
+        'princesa-be': false,
+        'princesa-ba': false,
+        'queen-valquiria': false
+    };
+
+    const dialogues = {
+        'princesa-be': ["Olá papai Rei!", "Sim papai eu vou me comportar e vou honrar o meu reino!"],
+        'princesa-ba': ["Boa tarde, Rei Juliano!", "A princesa Be está fazendo bagunça!"],
+        'queen-valquiria': ["Boa tarde meu esposo!", "A princesa Be está fazendo muita bagunça!"],
+        'rei-princesa-be': ["Princesa Be quero te falar?", "Você tem compromissos princesa!"],
+        'rei-princesa-ba': ["Princesa Ba, você viu a Be?", "Estou preocupado com ela!"],
+        'rei-queen-valquiria': ["Rainha, a Be está fazendo bagunça?", "Isso é preocupante!"]
+    };
+
+    function moveCharacter(direction) {
+        const character = document.getElementById('king-juliano');
+        let left = parseFloat(window.getComputedStyle(character).left) || character.offsetLeft;
+        let top = parseFloat(window.getComputedStyle(character).top) || character.offsetTop;
+
+        switch (direction) {
+            case 'up': character.style.top = (top - 10) + 'px'; break;
+            case 'down': character.style.top = (top + 10) + 'px'; break;
+            case 'left': character.style.left = (left - 10) + 'px'; break;
+            case 'right': character.style.left = (left + 10) + 'px'; break;
+        }
+
+        checkCollision();
+        checkFlowerCollision();
+    }
+
+    function checkCollision() {
+    const king = document.getElementById('king-juliano');
+    const characters = document.querySelectorAll('.static');
+    const dialogueBox = document.getElementById('dialogue-box');
+    
+    characters.forEach(character => {
+        const charRect = character.getBoundingClientRect();
+        const kingRect = king.getBoundingClientRect();
+
+        if (kingRect.left < charRect.left + charRect.width &&
+            kingRect.left + kingRect.width > charRect.left &&
+            kingRect.top < charRect.top + charRect.height &&
+            kingRect.top + kingRect.height > charRect.top) {
+
+            // Display dialogues based on which character the king is interacting with
+            const characterId = character.id;
+
+            if (!dialoguesCompleted[characterId]) {
+                const staticDialogue = dialogues[characterId].shift();  // Get next static character dialogue
+                const kingDialogueKey = `rei-${characterId}`;  // Key for king's dialogue with this character
+                const kingDialogue = dialogues[kingDialogueKey] ? dialogues[kingDialogueKey].shift() : null;
+
+                // Display static character dialogue first
+                if (staticDialogue) {
+                    dialogueBox.style.display = 'block';
+                    dialogueBox.style.left = charRect.left + 'px';
+                    dialogueBox.style.top = (charRect.top - 50) + 'px';
+                    dialogueBox.value = staticDialogue;
+
+                    // After a delay, display the king's dialogue
+                    setTimeout(() => {
+                        if (kingDialogue) {
+                            dialogueBox.value = kingDialogue;
+                        } else {
+                            dialoguesCompleted[characterId] = true;  // Mark dialogue as completed
+                            dialogueBox.style.display = 'none';  // Hide dialogue box if all dialogues are shown
+                        }
+                    }, 2000); // Delay to alternate between dialogues
+                } else {
+                    dialoguesCompleted[characterId] = true;
+                    dialogueBox.style.display = 'none';  // Hide dialogue box if all dialogues are shown
+                }
+            }
+        }
+    });
+
+    checkPhaseCompletion();
+}
+
+    function checkFlowerCollision() {
+        const king = document.getElementById('king-juliano');
+        const flowers = document.querySelectorAll('.flower');
+        
+        flowers.forEach(flower => {
+            const flowerRect = flower.getBoundingClientRect();
+            const kingRect = king.getBoundingClientRect();
+
+            if (kingRect.left < flowerRect.left + flowerRect.width &&
+                kingRect.left + kingRect.width > flowerRect.left &&
+                kingRect.top < flowerRect.top + flowerRect.height &&
+                kingRect.top + kingRect.height > flowerRect.top) {
+
+                flower.remove();  // Remove flower from game area
+                score += 100;     // Add 100 points to score
+                document.getElementById('score').innerText = `Pontuação: ${score}`;
+            }
+        });
+    }
+
+    function checkPhaseCompletion() {
+        if (dialoguesCompleted['princesa-be'] &&
+            dialoguesCompleted['princesa-ba'] &&
+            dialoguesCompleted['queen-valquiria']) {
+
+            document.getElementById('next-phase-button').style.display = 'block';
+        }
+    }
+
+    
+</script>
+
+</body>
+</html>
